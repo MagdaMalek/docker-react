@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t magdamalek/docker-react -f Fockerfile.dev .
+
+script:
+   - docker run magdamalek/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "docker"
+  env: "Docker-env"
+  bucket_name: "elasticbeanstalk-us-west-2-3243252"
+  bucket_path: "docker"
+  on:
+    branch: master
